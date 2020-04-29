@@ -1,0 +1,22 @@
+<script>
+    function convertNumberToString(number, hex = 10) {
+        
+        var integer = Math.floor(number);
+        var fraction = number - integer;
+        var string = '';
+
+        if(Number.isNaN(number)){ //判断number是否为NaN
+            return 'NaN'
+        }
+        if(number === +0 || number === -0){ //判断number是否为+0|-0
+            return '0'
+        }
+        while(integer > 0){
+            string = String(integer % hex) + string;
+            integer = Math.floor(integer / hex);
+        }
+
+        return string;
+    }
+    convertNumberToString(10.02)
+</script>

@@ -1,0 +1,46 @@
+<script>
+    /**
+     * @param { String } string 字符串
+     * @param { Number } hex 进制 默认十进制
+     * @return { Number } number 
+     */
+    function convertStringToNumber(string, hex = 10) {
+        // 检测用户输入是否是String或者Number
+        if (typeof string !== "string" && typeof string !== "number") return NaN;
+        var chars = string.trim().split(''); //取出前后空格并分割字符串
+        var number = 0; //初始化number
+        var i = 0; //初始化下标
+        var fraction = 1; //初始化小数
+
+        // 循环整数部分
+        while (i < chars.length && chars[i] != '.') {
+            number = number * hex;
+            number += chars[i].toUpperCase().codePointAt();//将字母转化成大写并获取码点
+            if (hex === 16) {
+                if (number >= 65 && number <= 90) {
+                    number = number - 55;
+                } else {
+                    number = number - 48;
+                }
+            } else {
+                number = chars[i].codePointAt() - 48;
+            }
+            i++;
+        }
+
+        // 如果遇到小数点则下标+1
+        if (chars[i] === '.') {
+            i++;
+        }
+        // 循环小数部分
+        while (i < chars.length) {
+            fraction = fraction / hex;
+            number += (chars[i].codePointAt(0) - '0'.codePointAt(0)) * fraction;
+            i++;
+        }
+
+        return number;
+
+    }
+    convertStringToNumber("a", 16)
+</script>
