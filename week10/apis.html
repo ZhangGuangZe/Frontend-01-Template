@@ -1,0 +1,469 @@
+<script>
+    let names = Object.getOwnPropertyNames(window);
+
+    function filterOut(names, props) {
+        let set = new Set();
+        props.forEach(o => set.add(o));
+        return names.filter(e => !set.has(e));
+    }
+
+    // ECMA 262
+    {
+        let js = new Set();
+        let objects = ["globalThis", "console", "BigInt", "BigInt64Array", "BigUint64Array", "Infinity", "NaN",
+            "undefined", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent",
+            "encodeURI", "encodeURIComponent", "Array", "Date", "RegExp", "Promise", "Proxy", "Map", "WeakMap",
+            "Set", "WeakSet", "Function", "Boolean", "String", "Number", "Symbol", "Object", "Error", "EvalError",
+            "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "ArrayBuffer",
+            "SharedArrayBuffer", "DataView", "Float32Array", "Float64Array", "Int8Array", "Int16Array",
+            "Int32Array", "Uint8Array", "Uint16Array", "Uint32Array", "Uint8ClampedArray", "Atomics", "JSON",
+            "Math", "Reflect", "escape", "unescape", "WebAssembly"
+        ];
+        objects.forEach(o => js.add(o));
+        names = names.filter(e => !js.has(e));
+
+    }
+
+
+    names = names.filter(e => {
+        try {
+            return !(window[e].prototype instanceof Node)
+        } catch (err) {
+            return true;
+        }
+    }).filter(e => e != "Node");
+
+
+    names = names.filter(e => !e.match(/^on/))
+
+    names = names.filter(e => !e.match(/^webkit/))
+
+
+    //https://html.spec.whatwg.org/#window
+    {
+        let windowprops = new Set();
+        objects = ["window", "self", "document", "name", "location", "history", "customElements", "locationbar",
+            "menubar", " personalbar", "scrollbars", "statusbar", "toolbar", "status", "close", "closed", "stop",
+            "focus", " blur", "frames", "length", "top", "opener", "parent", "frameElement", "open", "navigator",
+            "applicationCache", "alert", "confirm", "prompt", "print", "postMessage", "console", "personalbar",
+            "origin", "external", "screen", "innerWidth", "innerHeight", "scrollX", "pageXOffset", "scrollY",
+            "pageYOffset", "visualViewport", "screenX", "screenY", "outerWidth", "outerHeight", "devicePixelRatio",
+            "clientInformation", "event", "screenLeft", "screenTop", "isSecureContext", "performance",
+            "queueMicrotask", "requestAnimationFrame", "cancelAnimationFrame", "requestIdleCallback",
+            "cancelIdleCallback", "getComputedStyle", "matchMedia", "moveTo", "moveBy", "resizeTo", "resizeBy",
+            "scroll", "scrollTo", "scrollBy", "getSelection", "find", "fetch", "btoa", "atob", "setTimeout",
+            "clearTimeout", "setInterval", "clearInterval", "createImageBitmap", "blur", "crypto", "indexedDB",
+            "sessionStorage", "localStorage", "caches"
+        ];
+        objects.forEach(o => windowprops.add(o));
+        names = names.filter(e => !windowprops.has(e));
+    }
+
+
+    //https://html.spec.whatwg.org/
+    {
+        let interfaces = new Set();
+        objects = ["ApplicationCache", "AudioTrack", "AudioTrackList", "BarProp", "BeforeUnloadEvent",
+            "BroadcastChannel", "CanvasGradient", "CanvasPattern", "CanvasRenderingContext2D", "CloseEvent",
+            "CustomElementRegistry", "DOMStringList", "DOMStringMap", "DataTransfer", "DataTransferItem",
+            "DataTransferItemList", "DedicatedWorkerGlobalScope", "Document", "DragEvent", "ErrorEvent",
+            "EventSource", "External", "FormDataEvent", "HTMLAllCollection", "HashChangeEvent", "History",
+            "ImageBitmap", "ImageBitmapRenderingContext", "ImageData", "Location", "MediaError", "MessageChannel",
+            "MessageEvent", "MessagePort", "MimeType", "MimeTypeArray", "Navigator", "OffscreenCanvas",
+            "OffscreenCanvasRenderingContext2D", "PageTransitionEvent", "Path2D", "Plugin", "PluginArray",
+            "PopStateEvent", "PromiseRejectionEvent", "RadioNodeList", "SharedWorker", "SharedWorkerGlobalScope",
+            "Storage", "StorageEvent", "TextMetrics", "TextTrack", "TextTrackCue", "TextTrackCueList",
+            "TextTrackList", "TimeRanges", "TrackEvent", "ValidityState", "VideoTrack", "VideoTrackList",
+            "WebSocket", "Window", "Worker", "WorkerGlobalScope", "WorkerLocation", "WorkerNavigator",
+            "SubmitEvent", "HTMLOptionsCollection", "HTMLFormControlsCollection"
+        ];
+        objects.forEach(o => interfaces.add(o));
+
+        names = names.filter(e => !interfaces.has(e));
+    }
+
+    //http://www.ecma-international.org/ecma-402/5.0/index.html#Title
+    names = names.filter(e => e != "Intl")
+
+
+    //https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15
+    names = filterOut(names, ["WebGLVertexArrayObject", "WebGLTransformFeedback", "WebGLSync", "WebGLSampler",
+        "WebGLQuery", "WebGL2RenderingContext", "WebGLContextEvent", "WebGLObject", "WebGLBuffer",
+        "WebGLFramebuffer", "WebGLProgram", "WebGLRenderbuffer", "WebGLShader", "WebGLTexture",
+        "WebGLUniformLocation", "WebGLActiveInfo", "WebGLShaderPrecisionFormat", "WebGLRenderingContext"
+    ]);
+
+
+    //https://www.w3.org/TR/webaudio/
+    names = filterOut(names, ["AudioContext", "AudioNode", "AnalyserNode", "AudioBuffer", "AudioBufferSourceNode",
+        "AudioDestinationNode", "AudioParam", "AudioListener", "AudioWorklet", "AudioWorkletGlobalScope",
+        "AudioWorkletNode", "AudioWorkletProcessor", "BiquadFilterNode", "ChannelMergerNode",
+        "ChannelSplitterNode", "ConstantSourceNode", "ConvolverNode", "DelayNode", "DynamicsCompressorNode",
+        "GainNode", "IIRFilterNode", "MediaElementAudioSourceNode", "MediaStreamAudioSourceNode",
+        "MediaStreamTrackAudioSourceNode", "MediaStreamAudioDestinationNode", "PannerNode", "PeriodicWave",
+        "OscillatorNode", "StereoPannerNode", "WaveShaperNode", "ScriptProcessorNode", "AudioProcessingEvent",
+        "OfflineAudioContext", "OfflineAudioCompletionEvent", "BaseAudioContext", "AudioScheduledSourceNode",
+        "AudioParamMap"
+    ]);
+
+
+    //https://encoding.spec.whatwg.org/#dom-textencoder
+    names = filterOut(names, ["TextDecoder", "TextEncoder", "TextDecoderStream", "TextEncoderStream"]);
+
+
+    //https://streams.spec.whatwg.org/#blqs-class
+    names = filterOut(names, ["ReadableStream", "ReadableStreamDefaultReader", "ReadableStreamBYOBReader",
+        "ReadableStreamDefaultController", "ReadableByteStreamController", "ReadableStreamBYOBRequest",
+        "WritableStream", "WritableStreamDefaultWriter", "WritableStreamDefaultController", "TransformStream",
+        "TransformStreamDefaultController", "ByteLengthQueuingStrategy", "CountQueuingStrategy"
+    ]);
+
+
+    //https://wicg.github.io/
+    names = filterOut(names, ["SyncManager", "NetworkInformation", "VisualViewport", "LayoutShift",
+        "LargestContentfulPaint", "InputDeviceCapabilities", "SpeechSynthesisErrorEvent",
+        "SpeechSynthesisEvent", "SpeechSynthesisUtterance", "speechSynthesis", "Keyboard", "KeyboardLayoutMap",
+        "Lock", "LockManager", "Bluetooth", "BluetoothCharacteristicProperties", "BluetoothDevice",
+        "BluetoothRemoteGATTCharacteristic", "BluetoothRemoteGATTDescriptor", "BluetoothRemoteGATTServer",
+        "BluetoothRemoteGATTService", "USB", "USBAlternateInterface", "USBConfiguration", "USBConnectionEvent",
+        "USBDevice", "USBEndpoint", "USBInterface", "USBInTransferResult", "USBIsochronousInTransferPacket",
+        "USBIsochronousInTransferResult", "USBIsochronousOutTransferPacket", "USBIsochronousOutTransferResult",
+        "USBOutTransferResult"
+    ]);
+
+
+    //https://www.w3.org/TR/2016/REC-media-source-20161117/
+    names = filterOut(names, ["MediaSource", "SourceBufferList", "SourceBuffer", "VideoPlaybackQuality"]);
+
+
+    //https://www.w3.org/TR/2020/WD-screen-orientation-20200417/#screenorientation-interface
+    names = filterOut(names, ["ScreenOrientation"]);
+
+
+    //https://www.w3.org/TR/2019/CR-webrtc-20191213/#rtcsctptransport-interface
+    names = filterOut(names, ["RTCTrackEvent", "RTCStatsReport", "RTCSessionDescription", "RTCSctpTransport",
+        "RTCRtpTransceiver", "RTCRtpSender", "RTCRtpReceiver", "RTCPeerConnectionIceEvent",
+        "RTCPeerConnectionIceErrorEvent", "RTCPeerConnection", "RTCIceCandidate", "RTCErrorEvent", "RTCError",
+        "RTCDtlsTransport", "RTCDataChannelEvent", "RTCDataChannel", "RTCDTMFToneChangeEvent", "RTCDTMFSender",
+        "RTCCertificate", "RTCIceTransport"
+    ]);
+
+
+    //https://www.w3.org/TR/2017/WD-image-capture-20170621/
+    names = filterOut(names, ["PhotoCapabilities", "ImageCapture", "MediaSettingsRange"]);
+
+    //https://www.w3.org/TR/2019/CR-mediacapture-streams-20190702/
+    names = filterOut(names, ["OverconstrainedError", "MediaStreamTrackEvent", "MediaStreamTrack", "MediaStream",
+        "MediaDeviceInfo", "MediaDevices"
+    ]);
+
+
+    //https://www.w3.org/TR/2017/WD-mediastream-recording-20170621/
+    names = filterOut(names, ["MediaRecorder", "BlobEvent"]);
+
+
+    //https://www.w3.org/TR/2020/WD-media-capabilities-20200130/
+    names = filterOut(names, ["MediaCapabilities"]);
+
+
+    //https://www.w3.org/TR/2018/REC-IndexedDB-2-20180130/
+    names = filterOut(names, ["IDBVersionChangeEvent", "IDBTransaction", "IDBRequest", "IDBOpenDBRequest",
+        "IDBObjectStore", "IDBKeyRange", "IDBIndex", "IDBFactory", "IDBDatabase", "IDBCursorWithValue",
+        "IDBCursor"
+    ]);
+
+
+    //https://w3c.github.io/geolocation-api/#positionerror
+    names = filterOut(names, ["Geolocation", "GeolocationCoordinates", "GeolocationPosition",
+        "GeolocationPositionError"
+    ]);
+
+
+    //https://w3c.github.io/gamepad/extensions.html#gamepadhapticactuator-interface
+    names = filterOut(names, ["GamepadHapticActuator"]);
+
+
+    //https://www.w3.org/TR/2020/WD-gamepad-20200225/
+    names = filterOut(names, ["Gamepad", "GamepadButton", "GamepadEvent"]);
+
+
+    //https://www.w3.org/TR/WebCryptoAPI/#crypto-interface
+    names = filterOut(names, ["Crypto", "CryptoKey", "SubtleCrypto"]);
+
+
+    //https://www.w3.org/TR/2017/WD-mediacapture-fromelement-20170906/
+    names = filterOut(names, ["CanvasCaptureMediaStreamTrack"]);
+
+
+    //https://www.w3.org/TR/2016/CR-battery-status-20160707/
+    names = filterOut(names, ["BatteryManager"]);
+
+
+    //非标准
+    names = filterOut(names, ["BeforeInstallPromptEvent", "XSLTProcessor"]);
+
+
+    //https://w3c.github.io/DOM-Parsing/#the-domparser-interface
+    names = filterOut(names, ["XMLSerializer", "DOMParser"]);
+
+
+    //https://xhr.spec.whatwg.org/
+    names = filterOut(names, ["XMLHttpRequestUpload", "XMLHttpRequestEventTarget", "XMLHttpRequest", "ProgressEvent",
+        "FormData"
+    ]);
+
+
+    //https://www.w3.org/TR/2019/WD-uievents-20190530/
+    names = filterOut(names, ["WheelEvent", "KeyboardEvent", "FocusEvent", "CompositionEvent", "UIEvent"]);
+
+
+    //https://www.w3.org/TR/2019/CR-webvtt1-20190404/
+    names = filterOut(names, ["VTTCue"]);
+
+
+    //https://url.spec.whatwg.org/
+    names = filterOut(names, ["URLSearchParams", "URL"]);
+
+
+    //https://dom.spec.whatwg.org/
+    names = filterOut(names, ["TreeWalker", "StaticRange", "Range", "NodeList", "NodeIterator", "NodeFilter",
+        "NamedNodeMap", "MutationRecord", "MutationObserver", "HTMLCollection", "EventTarget", "Event",
+        "DOMTokenList", "DOMParser", "DOMImplementation", "CustomEvent", "AbortSignal", "AbortController",
+        "XPathResult", "XPathExpression", "XPathEvaluator"
+    ]);
+
+
+    //https://drafts.csswg.org/css-transitions/#Events-TransitionEvent
+    names = filterOut(names, ["TransitionEvent"]);
+
+
+    //https://www.w3.org/TR/2013/REC-touch-events-20131010/
+    names = filterOut(names, ["Touch", "TouchList", "TouchEvent"]);
+
+
+    //https://www.w3.org/TR/2017/WD-longtasks-1-20170907/
+    names = filterOut(names, ["TaskAttributionTiming", "PerformanceLongTaskTiming"]);
+
+
+    //https://drafts.csswg.org/cssom/#stylesheetlist
+    names = filterOut(names, ["StyleSheet", "StyleSheetList", "Screen", "MouseEvent", "MediaQueryListEvent",
+        "MediaQueryList", "MediaList", "CSSStyleSheet", "CSSStyleRule", "CSSStyleDeclaration", "CSSRuleList",
+        "CSSRule", "CSSPageRule", "CSSNamespaceRule", "CSSMediaRule", "CSSImportRule", "CSSGroupingRule",
+        "CSSFontFaceRule"
+    ]);
+
+
+    //https://w3c.github.io/webappsec-csp/2/#firing-securitypolicyviolationevent-events
+    names = filterOut(names, ["SecurityPolicyViolationEvent"]);
+
+
+    //https://svgwg.org/svg2-draft/types.html#InterfaceSVGNumber
+    names = filterOut(names, ["SVGUnitTypes", "SVGTransformList", "SVGTransform", "SVGStringList", "SVGRect",
+        "SVGPreserveAspectRatio", "SVGPointList", "SVGPoint", "SVGNumberList", "SVGNumber", "SVGMatrix",
+        "SVGLengthList", "SVGLength", "SVGAnimatedTransformList", "SVGAnimatedString", "SVGAnimatedRect",
+        "SVGAnimatedPreserveAspectRatio", "SVGAnimatedNumberList", "SVGAnimatedNumber", "SVGAnimatedLengthList",
+        "SVGAnimatedLength", "SVGAnimatedInteger", "SVGAnimatedEnumeration", "SVGAnimatedBoolean",
+        "SVGAnimatedAngle", "SVGAngle"
+    ]);
+
+
+    //https://fetch.spec.whatwg.org/#response-class
+    names = filterOut(names, ["Response", "Request", "Headers"]);
+
+
+    //https://fetch.spec.whatwg.org/#response-class
+    names = filterOut(names, ["Notification"]);
+
+
+    //https://www.w3.org/TR/2020/WD-resize-observer-1-20200211/
+    names = filterOut(names, ["ResizeObserverEntry", "ResizeObserver"]);
+
+
+    //https://www.w3.org/TR/2018/WD-reporting-1-20180925/
+    names = filterOut(names, ["ReportingObserver"]);
+
+
+    //https://www.w3.org/TR/2019/WD-pointerevents3-20191212/
+    names = filterOut(names, ["PointerEvent"]);
+
+
+    //https://www.w3.org/TR/2020/WD-navigation-timing-2-20200121/
+    names = filterOut(names, ["PerformanceTiming", "PerformanceNavigationTiming", "PerformanceNavigation"]);
+
+
+    //https://www.w3.org/TR/2020/WD-server-timing-20200430/
+    names = filterOut(names, ["PerformanceServerTiming"]);
+
+
+    //https://www.w3.org/TR/2020/WD-resource-timing-2-20200218/
+    names = filterOut(names, ["PerformanceResourceTiming", "PerformanceEntry"]);
+
+
+    //https://www.w3.org/TR/2017/WD-paint-timing-20170907/
+    names = filterOut(names, ["PerformancePaintTiming"]);
+
+
+    //https://www.w3.org/TR/2019/WD-performance-timeline-2-20191024/
+    names = filterOut(names, ["PerformanceObserverEntryList", "PerformanceObserver", "Performance"]);
+
+
+    //https://www.w3.org/TR/2020/WD-user-timing-3-20200421/
+    names = filterOut(names, ["PerformanceMeasure", "PerformanceMark"]);
+
+
+    //https://www.w3.org/TR/2018/WD-web-animations-1-20181011/
+    names = filterOut(names, ["KeyframeEffect", "AnimationEffect", "Animation"]);
+
+
+    //https://www.w3.org/TR/2019/WD-intersection-observer-20190531/
+    names = filterOut(names, ["IntersectionObserverEntry", "IntersectionObserver"]);
+
+
+    //https://www.w3.org/TR/2019/WD-input-events-1-20190530/
+    names = filterOut(names, ["InputEvent"]);
+
+
+    //https://www.w3.org/TR/2017/PR-requestidlecallback-20171010/
+    names = filterOut(names, ["IdleDeadline"]);
+
+
+    //https://www.w3.org/TR/2014/WD-css-font-loading-3-20140522/
+    names = filterOut(names, ["FontFaceSetLoadEvent", "FontFace"]);
+
+
+    //https://www.w3.org/TR/2019/WD-FileAPI-20190911/
+    names = filterOut(names, ["FileReader", "FileList", "File", "Blob"]);
+
+
+    //https://www.w3.org/TR/2018/CR-geometry-1-20181204/
+    names = filterOut(names, ["DOMRectReadOnly", "DOMRect", "DOMRectList", "DOMQuad", "DOMPointReadOnly", "DOMPoint",
+        "DOMMatrixReadOnly", "DOMMatrix", "WebKitCSSMatrix"
+    ]);
+
+
+    //https://heycam.github.io/webidl/#idl-DOMException
+    names = filterOut(names, ["DOMException"]);
+
+
+    //https://www.w3.org/TR/2020/WD-clipboard-apis-20200603/
+    names = filterOut(names, ["ClipboardEvent", "Clipboard"]);
+
+
+    //https://www.w3.org/TR/2018/WD-css-typed-om-1-20180410/
+    names = filterOut(names, ["StylePropertyMapReadOnly", "StylePropertyMap", "CSSVariableReferenceValue",
+        "CSSUnparsedValue", "CSSUnitValue", "CSSTranslate",
+        "CSSTransformValue", "CSSTransformComponent", "CSSStyleValue", "CSSNumericValue", "CSSMathValue",
+        "CSSMathSum", "CSSMathProduct", "CSSMathNegate", "CSSMathMin", "CSSMathMax", "CSSMathInvert",
+        "CSSKeywordValue", "CSSPerspective", "CSSNumericArray", "CSSMatrixComponent", "CSSPositionValue",
+        "CSSImageValue", "CSSSkewY", "CSSSkewX", "CSSSkew", "CSSScale", "CSSRotate"
+    ]);
+
+
+    //https://www.w3.org/TR/2020/WD-css-conditional-4-20200303/
+    names = filterOut(names, ["CSSSupportsRule", "CSS", "CSSConditionRule"]);
+
+
+    //https://www.w3.org/TR/2018/WD-css-animations-1-20181011/
+    names = filterOut(names, ["CSSKeyframesRule", "CSSKeyframeRule", "AnimationEvent"]);
+
+
+    //https://w3c.github.io/webappsec-feature-policy/
+    names = filterOut(names, ["FeaturePolicy"]);
+
+
+    //https://www.w3.org/TR/2020/WD-mediasession-20200130/
+    names = filterOut(names, ["MediaMetadata", "MediaSession"]);
+
+
+    //https://www.w3.org/TR/2019/CR-payment-request-20191212/
+    names = filterOut(names, ["PaymentRequestUpdateEvent", "PaymentMethodChangeEvent", "PaymentAddress",
+        "PaymentRequest", "PaymentResponse"
+    ]);
+
+
+    //https://www.w3.org/TR/2019/WD-payment-handler-20191021/
+    names = filterOut(names, ["PaymentInstruments", "PaymentManager"]);
+
+
+    //https://www.w3.org/TR/2017/WD-permissions-20170925/
+    names = filterOut(names, ["Permissions", "PermissionStatus"]);
+
+
+    //https://www.w3.org/TR/2020/WD-push-api-20200204/
+    names = filterOut(names, ["PushManager", "PushSubscription", "PushSubscriptionOptions"]);
+
+
+    //https://www.w3.org/TR/2016/WD-worklets-1-20160607/
+    names = filterOut(names, ["Worklet"]);
+
+
+    //https://w3c.github.io/accelerometer/#accelerometer-interface
+    names = filterOut(names, ["Accelerometer"]);
+
+
+    //https://w3c.github.io/ServiceWorker/
+    names = filterOut(names, ["Cache", "CacheStorage", "NavigationPreloadManager", "ServiceWorker",
+        "ServiceWorkerContainer", "ServiceWorkerRegistration"
+    ]);
+
+
+    //https://w3c.github.io/webappsec-credential-management/
+    names = filterOut(names, ["Credential", "CredentialsContainer", "FederatedCredential", "PasswordCredential"]);
+
+
+    //https://w3c.github.io/deviceorientation/#devicemotionevent
+    names = filterOut(names, ["DeviceMotionEvent", "DeviceMotionEventAcceleration", "DeviceMotionEventRotationRate",
+        "DeviceOrientationEvent"
+    ]);
+
+
+    //https://www.w3.org/TR/gyroscope/#gyroscope-interface
+    names = filterOut(names, ["Gyroscope"]);
+
+
+    //https://www.w3.org/TR/accelerometer/#linearaccelerationsensor-interface
+    names = filterOut(names, ["LinearAccelerationSensor"]);
+
+
+    //https://w3c.github.io/encrypted-media/#mediakeymessageevent
+    names = filterOut(names, ["MediaKeyMessageEvent", "MediaKeys", "MediaKeySession", "MediaKeyStatusMap",
+        "MediaKeySystemAccess", "MediaEncryptedEvent"
+    ]);
+
+
+    //https://webaudio.github.io/web-midi-api/#midiaccess-interface
+    names = filterOut(names, ["MIDIAccess", "MIDIConnectionEvent", "MIDIInput", "MIDIInputMap", "MIDIMessageEvent",
+        "MIDIOutput", "MIDIOutputMap", "MIDIPort"
+    ]);
+
+
+    //https://www.w3.org/TR/2019/CR-orientation-sensor-20191212/
+    names = filterOut(names, ["OrientationSensor", "AbsoluteOrientationSensor", "RelativeOrientationSensor"]);
+
+
+    //https://www.w3.org/TR/generic-sensor/#the-sensor-interface
+    names = filterOut(names, ["Sensor", "SensorErrorEvent"]);
+
+
+    //https://www.w3.org/TR/2017/CR-presentation-api-20170601/
+    names = filterOut(names, ["Presentation", "PresentationAvailability", "PresentationConnection",
+        "PresentationConnectionAvailableEvent", "PresentationConnectionCloseEvent",
+        "PresentationConnectionList", "PresentationReceiver", "PresentationRequest"
+    ]);
+
+
+    //https://www.w3.org/TR/2019/WD-webauthn-2-20191126/
+    names = filterOut(names, ["AuthenticatorAssertionResponse", "AuthenticatorAttestationResponse",
+        "AuthenticatorResponse", "PublicKeyCredential"
+    ]);
+
+
+    //https://www.w3.org/TR/2019/WD-webxr-20191010/
+    names = filterOut(names, ["XRBoundedReferenceSpace", "XRFrame", "XRInputSource", "XRInputSourceArray",
+        "XRInputSourceEvent", "XRInputSourcesChangeEvent", "XRPose", "XRReferenceSpace",
+        "XRReferenceSpaceEvent", "XRRenderState", "XRRigidTransform", "XRSession", "XRSessionEvent", "XRSpace",
+        "XRSystem", "XRView", "XRViewerPose", "XRViewport", "XRWebGLLayer"
+    ]);
+
+    console.log(names);
+</script>
