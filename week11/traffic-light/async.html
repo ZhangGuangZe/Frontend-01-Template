@@ -1,0 +1,94 @@
+<style>
+    .container {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container div {
+        margin: 5px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: gray;
+    }
+
+    .red.light {
+        background-color: red;
+        ;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+</style>
+
+<div class="container">
+    <div class="green"></div>
+    <div class="yellow"></div>
+    <div class="red"></div>
+    <button id="next">next</button>
+</div>
+
+<script>
+    function green() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('green')[0].classList.add('light');
+    }
+
+    function yellow() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+    }
+
+    function red() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('red')[0].classList.add('light');
+    }
+
+    //自动控制
+    function sleep(time) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, time);
+        });
+    }
+
+    //手工控制
+    function happen(element) {
+        return new Promise((resolve, reject) => {
+            element.addEventListener('click', resolve, {
+                once: true
+            })
+        });
+    }
+
+    async function go() {
+        // green();
+        // await sleep(10000);
+        // yellow();
+        // await sleep(2000);
+        // red();
+        // await sleep(5000);
+        // go();
+        while (true) {
+            green();
+            await happen(document.getElementById('next'));
+            yellow();
+            await happen(document.getElementById('next'));
+            red();
+            await happen(document.getElementById('next'));
+        }
+    }
+</script>

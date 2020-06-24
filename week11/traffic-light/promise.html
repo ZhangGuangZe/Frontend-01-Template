@@ -1,0 +1,77 @@
+<style>
+    .container {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container div {
+        margin: 5px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: gray;
+    }
+
+    .red.light {
+        background-color: red;
+        ;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+</style>
+
+<div class="container">
+    <div class="green"></div>
+    <div class="yellow"></div>
+    <div class="red"></div>
+</div>
+
+<script>
+    function green() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('green')[0].classList.add('light');
+    }
+
+    function yellow() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+    }
+
+    function red() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('red')[0].classList.add('light');
+    }
+
+    function sleep(time) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, time);
+        });
+    }
+
+    function go() {
+        green();
+        sleep(10000).then(() => {
+            yellow();
+            return sleep(2000);
+        }).then(() => {
+            red();
+            return sleep(5000);
+        }).then(go);
+
+    }
+</script>

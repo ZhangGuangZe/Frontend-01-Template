@@ -1,0 +1,79 @@
+<style>
+    .container {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container div {
+        margin: 5px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: gray;
+    }
+
+    .red.light {
+        background-color: red;
+        ;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+</style>
+
+<div class="container">
+    <div class="green"></div>
+    <div class="yellow"></div>
+    <div class="red"></div>
+</div>
+
+<script>
+    function green() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('green')[0].classList.add('light');
+        //setTimeout(yellow, 10000);
+    }
+
+    function yellow() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+        //setTimeout(red, 2000);
+    }
+
+    function red() {
+        var element = document.querySelector('.container');
+        for (var i = 0; i < 3; i++)
+            element.children[i].classList.remove('light');
+        document.getElementsByClassName('red')[0].classList.add('light');
+        //setTimeout(green, 5000);
+    }
+
+    function go() {
+        green();
+
+        //setTimeout(yellow, 10000);
+        //setTimeout(red, 12000);
+        //setTimeout(go, 17000);
+
+        setTimeout(function () {
+            yellow();
+            setTimeout(function () {
+                red();
+                setTimeout(go, 5000);
+            }, 2000);
+        }, 10000);
+
+    }
+</script>
